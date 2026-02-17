@@ -1,0 +1,53 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container">
+  <div class="section">
+    <h2>What's new in the fridge?</h2>
+    <form action="/submit" method="POST">
+      <div class="form-group">
+        <input
+          type="text"
+          name="itemName"
+          placeholder="What's the item?"
+          required
+        />
+        <input
+          type="text"
+          name="descrip"
+          placeholder="Tell me more about it!"
+          required
+        />
+        <input type="date" name="expDate" required />
+        <input type="submit" value="Add Item" />
+        </div>
+      </form>
+  </div>
+
+  <div class="section">
+    <h2>What's still in the fridge?</h2>
+    <% if (locals.itemList && itemList.length > 0) { %>
+      <div class="item-list">
+        <% itemList.forEach((ListItem) => { %>
+          <div class="item-card">
+            <div class="item-field">
+              <strong>Name</strong>
+              <span><%= ListItem.name %></span>
+            </div>
+            <div class="item-field">
+              <strong>Description</strong>
+              <span><%= ListItem.description %></span>
+            </div>
+            <div class="item-field">
+              <strong>Expiration Date</strong>
+              <span><%= ListItem.date %></span>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="empty-state">There's nothing left over right now :/</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
