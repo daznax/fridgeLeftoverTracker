@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-// import morgan from "morgan";
 
 const app = express();
 const port = 3000;
@@ -14,12 +13,16 @@ app.get("/", (req, res) => {
 });
 
 app.post("/submit", (req, res) => {
-  var name = req.body["itemName"];
-  var descrip = req.body["descrip"];
-  var expDate = req.body["expDate"];
-  var newId = nextId();
-  list.push(new foodItem(newId, name, descrip, expDate));
-  console.log(list);
+  if (req.body["delItem"]) {
+    let delItem = findObjToDelete(req.body["delItem"]);
+    list.splice(delItem, 1);
+  } else {
+    var name = req.body["itemName"];
+    var descrip = req.body["descrip"];
+    var expDate = req.body["expDate"];
+    var newId = nextId();
+    list.push(new foodItem(newId, name, descrip, expDate));
+  }
   res.render("index.ejs", { itemList: list });
 });
 
@@ -35,6 +38,13 @@ class foodItem {
 // returns the next available numeric ID (simple)
 function nextId() {
   return (id += 1);
+}
+
+function findObjToDelete(searchId) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id == searchId) return i;
+  }
+  return -1;
 }
 
 app.listen(port, () => {

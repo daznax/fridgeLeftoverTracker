@@ -18,13 +18,13 @@
           required
         />
         <input type="date" name="expDate" required />
-        <input type="submit" value="Add Item" />
+        <input name="addItem" type="submit" value="Add Item" />
         </div>
       </form>
   </div>
 
   <div class="section">
-    <h2>What's still in the fridge?</h2>
+    <h2>What's in the fridge?</h2>
     <% if (locals.itemList && itemList.length > 0) { %>
       <div class="item-list">
         <% itemList.forEach((ListItem) => { %>
@@ -41,6 +41,12 @@
               <strong>Expiration Date</strong>
               <span><%= ListItem.date %></span>
             </div>
+            <form action="/submit" method="POST">           
+              <div class="form-group">
+                <input hidden name="delItem" value=<%= ListItem.id %> />
+                <input type="submit" value="Delete Entry" />
+              </div>
+            </form> 
           </div>
         <% }) %>
       </div>
